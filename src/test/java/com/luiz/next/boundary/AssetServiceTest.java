@@ -270,9 +270,7 @@ public class AssetServiceTest {
 		assertEquals(true, resultDivision.isChange());
 
 		Asset division = resultDivision.getAsset();
-		for (HistoryValue<?> value : division.getValue().getHistory()) {
-			System.out.println(value);
-		}
+
 	}
 
 }
