@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.luiz.next.entity.Asset;
+import com.luiz.next.entity.value.ValueEntity;
 
 public interface AssetReporitory extends JpaRepository<Asset, Long> {
 
@@ -20,6 +21,10 @@ public interface AssetReporitory extends JpaRepository<Asset, Long> {
 	
 	@Query(value = "SELECT a FROM Asset a JOIN FETCH a.value WHERE a.name = :name")
 	public Optional<Asset> findByName(@Param("name") final String name);
+	
+	//@Query(value = "SELECT a FROM Asset a JOIN TREAT(a.value AS DoubleValue) v JOIN v.history WHERE a.name = :name")
+	//@Query(value = "SELECT a FROM Asset a JOIN a.value v, DoubleValue tv JOIN FETCH tv.history WHERE a.name = :name AND v.id = tv.id")
+	//public Optional<Asset> findByNameWithHistory(@Param("name") final String name);
 
 	@Query(value = "SELECT a FROM Asset a JOIN FETCH a.value WHERE a.name NOT LIKE :asset AND a.name IN (:dependencies)")
 	public List<Asset> loadAllDependenciesIn(@Param("asset") final String name,

@@ -54,4 +54,6 @@ public class StringValue extends ValueEntity<String> {
 			this.history = new ArrayList<HistoryValue<String>>();
 		return history;
 	}
+	
+	
 }

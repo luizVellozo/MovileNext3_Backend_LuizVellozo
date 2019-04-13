@@ -16,6 +16,8 @@ import com.luiz.next.control.ValueRepository;
 import com.luiz.next.entity.Asset;
 import com.luiz.next.entity.AssetResult;
 import com.luiz.next.entity.HistoryValue;
+import com.luiz.next.entity.value.DoubleValue;
+import com.luiz.next.entity.value.ValueEntity;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
@@ -247,7 +249,7 @@ public class AssetServiceTest {
 		assertEquals(13, result.getValue());
 		assertEquals(false, result.isChange());
 	}
-
+	
 	@Test
 	public void testUpdateAsset() {
 
@@ -268,8 +270,55 @@ public class AssetServiceTest {
 		assertEquals(true, resultDivision.isSucess());
 		assertEquals(15.65, resultDivision.getValue());
 		assertEquals(true, resultDivision.isChange());
+		
+		service.updateValueIn("A",(Double)423.3);
+		service.updateValueIn("B",(Integer)19);
+		resultDivision = service.processAsset("division");
+		assertEquals(true, resultDivision.isSucess());
+		assertEquals(221.15, resultDivision.getValue());
+		assertEquals(true, resultDivision.isChange());
 
-		Asset division = resultDivision.getAsset();
+	}
+
+	@Test
+	public void testGetHistory() {
+
+		service.CreateNewAsset("A", 5.5);
+		service.CreateNewAsset("B", 10);
+
+		AssetResult resultDivision = service.CreateNewAssetWithFormula("division", 0.0, "(A + B)/2");
+
+		System.out.println(resultDivision.getErrors());
+		System.out.println(resultDivision.getAsset());
+		assertEquals(true, resultDivision.isSucess());
+		assertEquals(7.75, resultDivision.getValue());
+		assertEquals(true, resultDivision.isChange());
+		
+		service.updateValueIn("A",(Double)14.3);
+		service.updateValueIn("B",(Integer)17);
+		resultDivision = service.processAsset("division");
+		assertEquals(true, resultDivision.isSucess());
+		assertEquals(15.65, resultDivision.getValue());
+		assertEquals(true, resultDivision.isChange());
+		
+		service.updateValueIn("A",(Double)423.3);
+		service.updateValueIn("B",(Integer)19);
+		resultDivision = service.processAsset("division");
+		assertEquals(true, resultDivision.isSucess());
+		assertEquals(221.15, resultDivision.getValue());
+		assertEquals(true, resultDivision.isChange());
+
+		ValueEntity<?> value = valueRepository.getHistory(resultDivision.getAsset().getValue());
+		System.out.println(value);
+		for (HistoryValue<?> v : value.getHistory()) {
+			System.out.println(v);
+		}
+		
+		DoubleValue value2 = valueRepository.getHistory(resultDivision.getAsset().getValue());
+		System.out.println(value2);
+		for (HistoryValue<Double> v : value2.getHistory()) {
+			System.out.println(v);
+		}
 
 	}
 

@@ -16,7 +16,6 @@ public class IntValue extends ValueEntity<Integer> {
 	
 	private Integer intValue;
 	
-
 	@ElementCollection(fetch=FetchType.LAZY)
 	@CollectionTable(name = "integer_history",joinColumns = @JoinColumn(name = "id"))
 	private List<HistoryValue<Integer>> history;

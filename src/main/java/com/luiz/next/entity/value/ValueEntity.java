@@ -2,6 +2,7 @@ package com.luiz.next.entity.value;
 
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -56,6 +57,4 @@ public abstract class ValueEntity<T extends Object> implements Value<T> {
 	public String toString() {
 		return "Value: " + get() + ", "+getTypeName();
 	}
-	
-	
 }
